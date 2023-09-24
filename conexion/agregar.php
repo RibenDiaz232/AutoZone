@@ -20,7 +20,7 @@ if ($tablesResult) {
 } else {
     echo "Error al obtener la lista de tablas: " . $mysqli->error;
 }
-
+#prueba
 // Inicializar variables
 $tablaSeleccionada = "";
 $columnas = array();
