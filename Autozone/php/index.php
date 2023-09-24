@@ -1,6 +1,11 @@
 <?php
-// Resto del código de index.php...
+session_start(); // Inicia la sesión
 
+if (!isset($_SESSION['usuario'])) {
+    // Si el usuario no ha iniciado sesión, redirige a login.php
+    header("Location: login.php");
+    exit();
+}
 // Configuración de la conexión a la base de datos
 $servername = "localhost"; // Cambia esto al servidor de tu base de datos
 $username = "root"; // Cambia esto a tu nombre de usuario de la base de datos
@@ -14,24 +19,26 @@ $conn = new mysqli($servername, $username, $password, $database);
 if ($conn->connect_error) {
     die("La conexión a la base de datos falló: " . $conn->connect_error);
 }
-
+// Aquí puedes mostrar el contenido del punto de venta
 // Calcular los ingresos totales
 $sqlTotalIngresos = "SELECT SUM(precio) as total FROM ventas";
 $resultTotalIngresos = $conn->query($sqlTotalIngresos);
 $rowTotalIngresos = $resultTotalIngresos->fetch_assoc();
 $totalIngresos = $rowTotalIngresos['total'];
+
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Punto de Venta de AutoZone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/Autozone/css/index.css">
 </head>
 <body>
-    <header>
+<header>
         <!-- Barra de navegación -->
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
@@ -75,7 +82,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                 </div>
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Login</a>
+                        <a class="nav-link" href="/Autozone/php/login.php">Login</a>
                     </li>
                 </ul>
             </div>
@@ -109,7 +116,6 @@ $totalIngresos = $rowTotalIngresos['total'];
             </div>
         </div>
     </div>
-
     <main>
         <!-- Esta parte es para medir los ingresos -->
         
@@ -174,12 +180,14 @@ $totalIngresos = $rowTotalIngresos['total'];
         <!-- Pie de página -->
         <p>&copy; 2023 Punto de Venta de AutoZone</p>
     </footer>
-
+    <a href="logout.php">Cerrar Sesión</a> <!-- Agrega una página de "logout" para cerrar la sesión -->
+    
     <!-- Agrega el enlace a la biblioteca Font Awesome para el icono del carrito -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 
     <!-- Agrega el enlace a los archivos de Bootstrap JS (jQuery y Popper.js son necesarios) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.min.js"></script>
+
 </body>
 </html>

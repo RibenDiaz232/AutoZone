@@ -1,78 +1,60 @@
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+<?php
+session_start(); // Inicia la sesión
+
+if (isset($_SESSION['usuario'])) {
+    // Si el usuario ya ha iniciado sesión, redirige a index.php o a la página principal
+    header("Location: index.php");
+    exit();
+}
+
+include "conexion.php"; // Incluye tu archivo de conexión a la base de datos
+
+if (isset($_POST['login'])) {
+    // Verifica si se envió el formulario de inicio de sesión
+    $usuario = $_POST['usuario'];
+    $password = $_POST['password'];
+
+    // Realiza la verificación de las credenciales aquí (consulta a la base de datos)
+    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario' AND password = '$password'";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows == 1) {
+        // Si las credenciales son válidas, establece la sesión y redirige a index.php
+        $_SESSION['usuario'] = $usuario;
+        header("Location: index.php");
+        exit();
+    } else {
+        // Si las credenciales no son válidas, muestra un mensaje de error
+        $error_message = "Inicio de sesión fallido. Por favor, inténtalo de nuevo.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <title>Login</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v2.1.9/css/unicons.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/Autozone/css/login.css">
+  <!-- Agrega tus etiquetas meta y enlaces a CSS aquí -->
 </head>
 <body>
-	<?php 
-	include "conexion.php";
-	?>
-	<div class="section">
-		<div class="container">
-			<div class="row full-height justify-content-center">
-				<div class="col-12 text-center align-self-center py-5">
-				<div class="section pb-5 pt-5 pt-sm-2 text-center">
-						<h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
-			          	<input class="checkbox" type="checkbox" id="reg-log" name="reg-log"/>
-			          	<label for="reg-log"></label>
-						<div class="card-3d-wrap mx-auto">
-							<div class="card-3d-wrapper">
-								<div class="card-front">
-									<div class="center-wrap">
-										<div class="section text-center">
-											<h4 class="mb-4 pb-3">Log In</h4>
-											<form method="post" action="/Autozone/php/validacion.php">
-                                                <div class="form-group">
-                                                    <input type="text" class="form-style" name="usuario" placeholder="Usuario">
-                                                    <i class="input-icon uil uil-user"></i>
-                                                </div>
-                                                <div class="form-group mt-2">
-                                                    <input type="password" class="form-style" name="password" placeholder="Contraseña">
-                                                    <i class="input-icon uil uil-lock-alt"></i>
-                                                </div>
-                                                <input type="submit" value="Login" name="login" class="btn mt-4">
-				      					</div>
-			      					</div>
-			      				</div>
-								<div class="card-back">
-									<div class="center-wrap">
-										<div class="section text-center">
-											<h4 class="mb-3 pb-3">Sign Up</h4>
-											<form method="post">
-											<div class="form-group">
-												<input type="text" class="form-style" name="nombre-completo" placeholder="Full Name">
-												<i class="input-icon uil uil-user"></i>
-											</div>	
-											<div class="form-group mt-2">
-												<input type="tel" class="form-style" name="numero-de-telefono" placeholder="Phone Number">
-												<i class="input-icon uil uil-phone"></i>
-											</div>	
-                      <div class="form-group mt-2">
-												<input type="email" class="form-style" name="email" placeholder="Email">
-												<i class="input-icon uil uil-at"></i>
-											</div>
-											<div class="form-group mt-2">
-												<input type="password" class="form-style" name="password" placeholder="Password">
-												<i class="input-icon uil uil-lock-alt"></i>
-											</div>
-											<input  type="submit" value="Register" name="register" class="btn mt-4">
-											</form>
-				      					</div>
-			      					</div>
-			      				</div>
-			      			</div>
-			      		</div>
-			      	</div>
-		      	</div>
-	      	</div>
-	    </div>
-	</div>
+    <!-- Tu formulario de inicio de sesión existente debe estar aquí -->
+    <form method="post">
+        <div class="form-group">
+            <label for="usuario">Usuario:</label>
+            <input type="text" class="form-control" id="usuario" name="usuario" required>
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" name="login" class="btn btn-primary" action="validacion.php">Iniciar Sesión</button>
+    </form>
+
+    <?php
+    // Asegúrate de mostrar $error_message si existe algún error
+    if (isset($error_message)) {
+        echo '<div class="alert alert-danger">' . $error_message . '</div>';
+    }
+    ?>
 </body>
 </html>
