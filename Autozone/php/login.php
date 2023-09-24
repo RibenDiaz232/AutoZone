@@ -29,6 +29,7 @@ if (isset($_POST['login'])) {
     }
 }
 ?>
+//prueba
 
 <!DOCTYPE html>
 <html lang="es">
