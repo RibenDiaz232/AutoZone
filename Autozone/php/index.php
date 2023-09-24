@@ -76,6 +76,9 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="#">Clientes</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="/Autozone/php/graficasventas.php">Graficas de Ventas</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="#">Configurar</a>
                         </li>
                     </ul>
