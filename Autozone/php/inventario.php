@@ -23,24 +23,30 @@
         </tr>
         <!-- Aquí obtenemos y mostramos los datos de tu inventario desde la base de datos -->
         <?php
-        // Paso 1: Conectar a la base de datos (reemplaza con tus datos de conexión)
-        $contrasenas = ["Winsome1", "Ribendiaz232"];
-
-        $conn = null;
-        
-        foreach ($contrasenas as $contrasena) {
+        function conectarBaseDatos($contrasena) {
             $conn = new mysqli("localhost", "root", $contrasena, "autozone");
             
-            if (!$conn->connect_error) {
-                // La conexión se realizó con éxito, sal del bucle
-                break;
+            if ($conn->connect_error) {
+                return null; // Devuelve null si la conexión falla
             }
-        }
-                      
-        if ($conn->connect_error) {
-            die("La conexión a la base de datos falló: " . $conn->connect_error);
+            
+            return $conn;
         }
 
+        $password1 = "Winsome1";
+        $password2 = "Ribendiaz232";
+
+        // Si la contraseña es Winsome1, no intentar la conexión y mostrar un mensaje personalizado
+        if ($password2 === "Winsome1") {
+            die("No tienes permiso para usar esta contraseña.");
+        }
+
+        // Intentar conectar con la contraseña Ribendiaz232
+        $conn = conectarBaseDatos($password2);
+
+        if (!$conn) {
+            die("La conexión a la base de datos falló.");
+        }
         // Paso 2: Obtener datos del inventario desde la base de datos
         $sql = "SELECT * FROM productos";
         $result = $conn->query($sql);
