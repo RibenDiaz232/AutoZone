@@ -1,12 +1,21 @@
 <?php
-// Datos de conexión a la base de datos
-$servername = "localhost"; // Nombre del servidor
-$username = "root"; // Nombre de usuario de la base de datos
-$password = "Winsome1"; // Contraseña de la base de datos
-$database = "Autozone"; // Nombre de la base de datos
+// Tu contraseña
+$tuPassword = "Ribendiaz232";
 
-// Crear la conexión
-$conn = new mysqli($servername, $username, $password, $database);
+// Contraseña de tu compañero
+$companeroPassword = "Winsome1";
+
+// Contraseña que se utilizará
+$contrasenaUtilizar = "";
+
+if ($tuPassword === "Ribendiaz232") {
+    $contrasenaUtilizar = $tuPassword;
+} else {
+    $contrasenaUtilizar = $companeroPassword;
+}
+
+// Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
+$conn = new mysqli("localhost", "root", $contrasenaUtilizar, "autozone");
 
 // Verificar la conexión
 if ($conn->connect_error) {
@@ -28,7 +37,7 @@ if ($conn->connect_error) {
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4">
             <h1 class="text-center">Iniciar Sesión</h1>
-            <form action="validacion.php" method="post">
+            <form action="/AutoZone/php/validacion.php" method="post">
                 <div class="mb-3">
                     <label for="usuario" class="form-label">Correo Electrónico</label>
                     <input type="usuario" class="form-control" id="email" name="email" required>
