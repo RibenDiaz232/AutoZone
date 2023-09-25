@@ -24,13 +24,19 @@
         <!-- Aquí obtenemos y mostramos los datos de tu inventario desde la base de datos -->
         <?php
         // Paso 1: Conectar a la base de datos (reemplaza con tus datos de conexión)
-        $servername = "localhost";
-        $username = "root";
-        $password = "Winsome1";
-        $database = "Autozone";
+        $contrasenas = ["Winsome1", "Ribendiaz232"];
 
-        $conn = new mysqli($servername, $username, $password, $database);
-
+        $conn = null;
+        
+        foreach ($contrasenas as $contrasena) {
+            $conn = new mysqli("localhost", "root", $contrasena, "autozone");
+            
+            if (!$conn->connect_error) {
+                // La conexión se realizó con éxito, sal del bucle
+                break;
+            }
+        }
+                      
         if ($conn->connect_error) {
             die("La conexión a la base de datos falló: " . $conn->connect_error);
         }

@@ -1,28 +1,18 @@
 <?php
 session_start(); // Inicia la sesión
 
-if (!isset($_SESSION['usuario'])) {
-    // Si el usuario no ha iniciado sesión, redirige a login.php
-    header("Location: login.php");
-    exit();
+$contrasenas = ["Winsome1", "Ribendiaz232"];
+
+$conn = null;
+
+foreach ($contrasenas as $contrasena) {
+    $conn = new mysqli("localhost", "root", $contrasena, "autozone");
+    
+    if (!$conn->connect_error) {
+        // La conexión se realizó con éxito, sal del bucle
+        break;
+    }
 }
-// Contraseña de tu compañero
-$companeroPassword = "Winsome1";
-
-// Tu contraseña
-$tuPassword = "Ribendiaz232";
-
-// Contraseña que se utilizará
-$contrasenaUtilizar = "";
-
-if ($tuPassword === "Ribendiaz232") {
-    $contrasenaUtilizar = $tuPassword;
-} else {
-    $contrasenaUtilizar = $companeroPassword;
-}
-
-// Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
-$conn = new mysqli("localhost", "root", "Winsome1", "autozone");
 
 
 // Verificar la conexión
