@@ -22,7 +22,8 @@ if ($tuPassword === "Ribendiaz232") {
 }
 
 // Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
-$conn = new mysqli("localhost", "root", $contrasenaUtilizar, "autozone");
+$conn = new mysqli("localhost", "root", $companeroPassword, "autozone");
+
 
 // Verificar la conexión
 if ($conn->connect_error) {
@@ -44,7 +45,7 @@ $totalIngresos = $rowTotalIngresos['total'];
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Punto de Venta de AutoZone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/Autozone/css/index.css">
+    <link rel="stylesheet" href="/AutoZone/Autozone/css/index.css">
 </head>
 <body>
 <header>
@@ -52,7 +53,7 @@ $totalIngresos = $rowTotalIngresos['total'];
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
         <a class="navbar-brand" href="#">
-            <img src="/Autozone/imagenes/az-logo-full.svg" alt="logo" width="150px">
+            <img src="/Autozone/Autozone/imagenes/az-logo-full.svg" alt="logo" width="150px">
         </a> <!-- Logo de la página -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -61,7 +62,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="/Autozone/php/inventario.php">Inventario</a>
+                            <a class="nav-link" href="/Autozone/AutoZone/php/inventario.php">Inventario</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Marca y Categoría</a>
@@ -70,7 +71,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="#">Compar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Autozone/php/venta.php">Vender</a>
+                            <a class="nav-link" href="/AutoZone/Autozone/php/venta.php">Vender</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Reporte</a>
@@ -82,7 +83,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="#">Clientes</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/Autozone/php/graficasventas.php">Graficas de Ventas</a>
+                            <a class="nav-link" href="/AutoZone/Autozone/php/graficasventas.php">Graficas de Ventas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Configurar</a>
@@ -94,7 +95,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                         // Si ha iniciado sesión, muestra el enlace "Cerrar Sesión" que redirige a la página de logout.php para cerrar la sesión
                         echo '<ul class="navbar-nav ml-auto">';
                         echo '<li class="nav-item">';
-                        echo '<a class="nav-link" href="/Autozone/php/logout.php">Cerrar Sesión</a>';
+                        echo '<a class="nav-link" href="/AutoZone/Autozone/php/login.php">Cerrar Sesión</a>';
                         echo '</li>';
                         echo '</ul>';
                     }

@@ -59,7 +59,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Punto de Venta</title>
-    <link rel="stylesheet" href="/Autozone/css/venta.css">
+    <link rel="stylesheet" href="/AutoZone/Autozone/css/venta.css">
 </head>
 <body>
     <h1>Punto de Venta</h1>
@@ -86,6 +86,6 @@ $conn->close();
     </div>
 
     <!-- Botón para volver al menú -->
-    <a href="/Autozone/php/index.php">Volver al Menú</a>
+    <a href="/AutoZone/Autozone/php/index.php">Volver al Menú</a>
 </body>
 </html>

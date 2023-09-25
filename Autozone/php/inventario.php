@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inventario</title>
-    <link rel="stylesheet" href="/Autozone/css/inventario.css">
+    <link rel="stylesheet" href="/AutoZone/Autozone/css/inventario.css">
 
     <script src="/ruta/a/jsbarcode-master.all.min.js"></script>
 </head>
@@ -66,7 +66,7 @@
     </table>
     
     <!-- Botón de regreso -->
-    <a href="/Autozone/php/index.php">Regresar</a>
+    <a href="/AutoZone/Autozone/php/index.php">Regresar</a>
 
     <!-- Script JavaScript para generar códigos de barras -->
     <script>
