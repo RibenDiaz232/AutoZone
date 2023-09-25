@@ -58,7 +58,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="#">Marca y Categoría</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Compar</a>
+                            <a class="nav-link" href="#">Comprar</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/AutoZone/Autozone/php/venta.php">Vender</a>
