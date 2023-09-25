@@ -1,22 +1,9 @@
 <?php
-// Contraseña de tu compañero
-$companeroPassword = "Winsome1";
-
-// Tu contraseña
-$tuPassword = "Ribendiaz232";
-
-// Contraseña que se utilizará
-$contrasenaUtilizar = "";
-
-if ($tuPassword === "Ribendiaz232") {
-    $contrasenaUtilizar = $tuPassword;
-} else {
-    $contrasenaUtilizar = $companeroPassword;
+include "conexionpwd.php";
+// Verificar la conexión
+if (!$conn) {
+    die("La conexión a la base de datos falló.");
 }
-
-// Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
-$conn = new mysqli("localhost", "root", "Winsome1", "autozone");
-
 // Obtener datos de ventas diarias
 $ventasDiarias = array();
 for ($i = 1; $i <= 7; $i++) {
