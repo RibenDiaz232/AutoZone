@@ -22,7 +22,7 @@ if ($tuPassword === "Ribendiaz232") {
 }
 
 // Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
-$conn = new mysqli("localhost", "root", $companeroPassword, "autozone");
+$conn = new mysqli("localhost", "root", "Winsome1", "autozone");
 
 
 // Verificar la conexión
