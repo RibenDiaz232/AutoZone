@@ -1,15 +1,21 @@
 <?php
-// Paso 2: Conectar a la base de datos
-$servername = "localhost";
-$username = "root";
-$password = "Winsome1";
-$database = "Autozone";
+// Contraseña de tu compañero
+$companeroPassword = "Winsome1";
 
-$conn = new mysqli($servername, $username, $password, $database);
+// Tu contraseña
+$tuPassword = "Ribendiaz232";
 
-if ($conn->connect_error) {
-    die("La conexión a la base de datos falló: " . $conn->connect_error);
+// Contraseña que se utilizará
+$contrasenaUtilizar = "";
+
+if ($tuPassword === "Ribendiaz232") {
+    $contrasenaUtilizar = $tuPassword;
+} else {
+    $contrasenaUtilizar = $companeroPassword;
 }
+
+// Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
+$conn = new mysqli("localhost", "root", $contrasenaUtilizar, "autozone");
 
 // Obtener datos de ventas diarias
 $ventasDiarias = array();
