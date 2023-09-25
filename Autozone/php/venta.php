@@ -1,14 +1,8 @@
 <?php
-// Paso 1: Conectar a la base de datos (reemplaza con tus datos de conexión)
-$servername = "localhost";
-$username = "root";
-$password = "Winsome1";
-$database = "Autozone";
-
-$conn = new mysqli($servername, $username, $password, $database);
-
-if ($conn->connect_error) {
-    die("La conexión a la base de datos falló: " . $conn->connect_error);
+include "conexionpwd.php";
+// Verificar la conexión
+if (!$conn) {
+    die("La conexión a la base de datos falló.");
 }
 
 // Inicializar variables
