@@ -1,7 +1,7 @@
 <?php
 session_start(); // Inicia la sesión
 function conectarBaseDatos($contrasena) {
-    $conn = new mysqli("localhost", "root", $contrasena, "autozone");
+    $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
     
     if ($conn->connect_error) {
         return null; // Devuelve null si la conexión falla
@@ -12,15 +12,17 @@ function conectarBaseDatos($contrasena) {
 
 $password1 = "Winsome1";
 $password2 = "Ribendiaz232";
+$conn = null;
 
-// Si la contraseña es Winsome1, no intentar la conexión y mostrar un mensaje personalizado
-if ($password2 === "Winsome1") {
-    die("No tienes permiso para usar esta contraseña.");
+// Intentar conectar con la contraseña de tu compañero
+$conn = conectarBaseDatos($password1);
+
+// Si la conexión falla, intentar con tu contraseña
+if (!$conn) {
+    $conn = conectarBaseDatos($password2);
 }
 
-// Intentar conectar con la contraseña Ribendiaz232
-$conn = conectarBaseDatos($password2);
-
+// Verificar la conexión
 if (!$conn) {
     die("La conexión a la base de datos falló.");
 }
