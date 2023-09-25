@@ -1,32 +1,16 @@
 <?php
-session_start(); // Inicia la sesión
+// Datos de conexión a la base de datos
+$servername = "localhost"; // Nombre del servidor
+$username = "root"; // Nombre de usuario de la base de datos
+$password = "Winsome1"; // Contraseña de la base de datos
+$database = "Autozone"; // Nombre de la base de datos
 
-if (isset($_SESSION['usuario'])) {
-    // Si el usuario ya ha iniciado sesión, redirige a index.php o a la página principal
-    header("Location: index.php");
-    exit();
-}
+// Crear la conexión
+$conn = new mysqli($servername, $username, $password, $database);
 
-include "conexion.php"; // Incluye tu archivo de conexión a la base de datos
-
-if (isset($_POST['login'])) {
-    // Verifica si se envió el formulario de inicio de sesión
-    $usuario = $_POST['usuario'];
-    $password = $_POST['password'];
-
-    // Realiza la verificación de las credenciales aquí (consulta a la base de datos)
-    $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario' AND password = '$password'";
-    $result = $conn->query($sql);
-
-    if ($result->num_rows == 1) {
-        // Si las credenciales son válidas, establece la sesión y redirige a index.php
-        $_SESSION['usuario'] = $usuario;
-        header("Location: index.php");
-        exit();
-    } else {
-        // Si las credenciales no son válidas, muestra un mensaje de error
-        $error_message = "Inicio de sesión fallido. Por favor, inténtalo de nuevo.";
-    }
+// Verificar la conexión
+if ($conn->connect_error) {
+    die("La conexión a la base de datos falló: " . $conn->connect_error);
 }
 ?>
 
