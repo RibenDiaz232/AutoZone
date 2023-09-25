@@ -37,7 +37,7 @@ if ($conn->connect_error) {
     <div class="container vh-100 d-flex justify-content-center align-items-center">
         <div class="card p-4">
             <h1 class="text-center">Iniciar Sesión</h1>
-            <form action="/AutoZone/php/validacion.php" method="post">
+            <form action="/Autozone/AutoZone/php/validacion.php" method="post">
                 <div class="mb-3">
                     <label for="usuario" class="form-label">Correo Electrónico</label>
                     <input type="usuario" class="form-control" id="email" name="email" required>
