@@ -6,14 +6,23 @@ if (!isset($_SESSION['usuario'])) {
     header("Location: login.php");
     exit();
 }
-// Configuración de la conexión a la base de datos
-$servername = "localhost"; // Cambia esto al servidor de tu base de datos
-$username = "root"; // Cambia esto a tu nombre de usuario de la base de datos
-$password = "Winsome1"; // Cambia esto a tu contraseña de la base de datos
-$database = "autozone"; // Cambia esto al nombre de tu base de datos
+// Contraseña de tu compañero
+$companeroPassword = "Winsome1";
 
-// Crear una conexión
-$conn = new mysqli($servername, $username, $password, $database);
+// Tu contraseña
+$tuPassword = "Ribendiaz232";
+
+// Contraseña que se utilizará
+$contrasenaUtilizar = "";
+
+if ($tuPassword === "Ribendiaz232") {
+    $contrasenaUtilizar = $tuPassword;
+} else {
+    $contrasenaUtilizar = $companeroPassword;
+}
+
+// Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
+$conn = new mysqli("localhost", "root", $contrasenaUtilizar, "autozone");
 
 // Verificar la conexión
 if ($conn->connect_error) {

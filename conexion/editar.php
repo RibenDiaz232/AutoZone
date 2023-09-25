@@ -39,7 +39,7 @@
                             // Consulta para obtener el registro seleccionado
                             $query = "SELECT * FROM $tabla WHERE $tabla.ID$tabla = ?";
                             $stmt = $mysqli->prepare($query);
-                            $stmt->bind_param("i", $id);
+                            $stmt->bind_param("id", $id);
                             $stmt->execute();
                             $result = $stmt->get_result();
 

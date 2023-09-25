@@ -52,6 +52,8 @@
                 <option value="pedidos">Pedidos</option>
                 <option value="productos">Productos</option>
                 <option value="proveedores">Proveedores</option>
+                <option value="usuarios">Usuarios</option>
+                <option value="ventas">Ventas</option>
             </select>
         </div>
         <div class="text-center mb-3">

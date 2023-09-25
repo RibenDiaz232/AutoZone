@@ -1,16 +1,26 @@
 <?php
-// Datos de conexión a la base de datos
-$host = "localhost"; // Cambia esto si tu base de datos está en un servidor remoto
-$usuario = "root";
-$contrasena = "Winsome1";
-$base_de_datos = "autozone";
 
-// Crear una conexión a la base de datos
-$conexion = new mysqli($host, $usuario, $contrasena, $base_de_datos);
+// Tu contraseña
+$tuPassword = "Ribendiaz232";
+
+// Contraseña de tu compañero
+$companeroPassword = "Winsome1";
+
+// Contraseña que se utilizará
+$contrasenaUtilizar = "";
+
+if ($tuPassword === "Ribendiaz232") {
+    $contrasenaUtilizar = $tuPassword;
+} else {
+    $contrasenaUtilizar = $companeroPassword;
+}
+
+// Luego, puedes usar $contrasenaUtilizar para crear la instancia de conexión
+$conn = new mysqli("localhost", "root", $contrasenaUtilizar, "autozone");
 
 // Verificar si hay errores en la conexión
-if ($conexion->connect_error) {
-    die("Error de conexión: " . $conexion->connect_error);
+if ($conn->connect_error) {
+    die("Error de conexión: " . $conn->connect_error);
 }
 
 // Ahora puedes usar $conexion para realizar consultas a la base de datos
