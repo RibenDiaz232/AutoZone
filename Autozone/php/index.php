@@ -49,22 +49,19 @@ $totalIngresos = $rowTotalIngresos['total'];
 <body>
 <header>
         <!-- Barra de navegación -->
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <div class="container">
-                <a class="navbar-brand" href="#">
-                    <img src="/Autozone/imagenes/az-logo-full.svg" alt="logo" width="150px">
-                </a> <!-- Logo de la página -->
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="/Autozone/imagenes/az-logo-full.svg" alt="logo" width="150px">
+        </a> <!-- Logo de la página -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
                 <!-- Menú de navegación -->
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Inventario</a>
+                            <a class="nav-link" href="/Autozone/php/inventario.php">Inventario</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Marca y Categoría</a>
@@ -73,7 +70,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="#">Compar</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Vender</a>
+                            <a class="nav-link" href="/Autozone/php/venta.php">Vender</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Reporte</a>
@@ -91,14 +88,20 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="#">Configurar</a>
                         </li>
                     </ul>
+                    <?php
+                    // Verificar si el usuario ha iniciado sesión
+                    if (isset($_SESSION['usuario'])) {
+                        // Si ha iniciado sesión, muestra el enlace "Cerrar Sesión" que redirige a la página de logout.php para cerrar la sesión
+                        echo '<ul class="navbar-nav ml-auto">';
+                        echo '<li class="nav-item">';
+                        echo '<a class="nav-link" href="/Autozone/php/logout.php">Cerrar Sesión</a>';
+                        echo '</li>';
+                        echo '</ul>';
+                    }
+                    ?>
                 </div>
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/Autozone/php/login.php">Login</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        </div>
+</nav>
     </header>
     <div class="container">
         <div class="row">
@@ -192,7 +195,6 @@ $totalIngresos = $rowTotalIngresos['total'];
         <!-- Pie de página -->
         <p>&copy; 2023 Punto de Venta de AutoZone</p>
     </footer>
-    <a href="logout.php">Cerrar Sesión</a> <!-- Agrega una página de "logout" para cerrar la sesión -->
     
     <!-- Agrega el enlace a la biblioteca Font Awesome para el icono del carrito -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>

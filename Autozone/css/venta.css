@@ -1,0 +1,28 @@
+/* Estilo para el contenedor principal */
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Estilo para la columna de la lista de productos */
+.productos-column {
+    float: left;
+    width: 60%; /* Ajusta el ancho según tus necesidades */
+    padding: 10px;
+}
+
+/* Estilo para la columna de suma y cálculos */
+.suma-column {
+    float: left;
+    width: 40%; /* Ajusta el ancho según tus necesidades */
+    padding: 10px;
+    background-color: #f4f4f4; /* Cambia el color de fondo según tu preferencia */
+    border-left: 1px solid #ccc; /* Agrega un borde a la izquierda para separar las columnas */
+}
+
+/* Limpia el float para evitar que elementos posteriores se superpongan */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
