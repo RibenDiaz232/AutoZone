@@ -12,10 +12,29 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tabla"]) && isset($_POST["ID"])) {
         $tabla = $_POST["tabla"];
         $id = $_POST["ID"];
-
-        // Crear una instancia de conexión a la base de datos
-        $mysqli = new mysqli("localhost", "root", "Ribendiaz232", "autozone");
-
+        function conectarBaseDatos($contrasena) {
+            $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
+            if ($conn->connect_error) {
+                return null; // Devuelve null si la conexión falla
+            }   
+            return $conn;
+        }
+        $password1 = "Winsome1";
+        $password2 = "Ribendiaz232";
+        $conn = null;
+        
+        // Intentar conectar con la contraseña de tu compañero
+        $conn = conectarBaseDatos($password1);
+        
+        // Si la conexión falla, intentar con tu contraseña
+        if (!$conn) {
+            $conn = conectarBaseDatos($password2);
+        }
+        
+        // Verificar la conexión
+        if (!$conn) {
+            die("La conexión a la base de datos falló.");
+        }
         // Checar conexión a la base de datos.
         if ($mysqli->connect_errno) {
             echo "Falló en conectar a MySQL: " . $mysqli->connect_error;
