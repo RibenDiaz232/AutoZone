@@ -80,6 +80,6 @@ $conn->close();
     </div>
 
     <!-- Botón para volver al menú -->
-    <a href="/AutoZone/Autozone/php/index.php">Volver al Menú</a>
+    <a href="index.php">Volver al Menú</a>
 </body>
 </html>
