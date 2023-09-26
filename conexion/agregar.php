@@ -20,7 +20,7 @@ if ($tablesResult) {
 } else {
     echo "Error al obtener la lista de tablas: " . $mysqli->error;
 }
-#prueba
+
 // Inicializar variables
 $tablaSeleccionada = "";
 $columnas = array();
@@ -28,6 +28,23 @@ $columnas = array();
 // Comprobar si se ha enviado un formulario (para mostrar el collapse)
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tablaSeleccionada = $_POST['tabla'];
+
+    // Obtener información de columnas de la tabla seleccionada
+    $columnInfoQuery = "SHOW COLUMNS FROM $tablaSeleccionada";
+    $columnInfoResult = $mysqli->query($columnInfoQuery);
+
+    if ($columnInfoResult) {
+        while ($column = $columnInfoResult->fetch_assoc()) {
+            $columnas[] = $column['Field'];
+        }
+    } else {
+        echo "Error al obtener información de columnas: " . $mysqli->error;
+    }
+}
+
+// Comprobar si se ha pasado el parámetro 'tabla' en la URL
+if (isset($_GET['tabla'])) {
+    $tablaSeleccionada = $_GET['tabla'];
 
     // Obtener información de columnas de la tabla seleccionada
     $columnInfoQuery = "SHOW COLUMNS FROM $tablaSeleccionada";
