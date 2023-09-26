@@ -133,6 +133,7 @@ if (!$conn) {
         while ($fieldinfo = $result->fetch_field()) {
             echo "<th>{$fieldinfo->name}</th>";
         }
+
         echo "<th>Acciones</th>";
         echo "</tr>";
         echo "</thead>";
@@ -150,7 +151,6 @@ if (!$conn) {
             echo "</td>";
             echo "</tr>";
         }
-
         echo "</tbody>";
         echo "</table>";
         echo "</div>";
