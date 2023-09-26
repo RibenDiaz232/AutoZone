@@ -1,3 +1,32 @@
+<?php
+function conectarBaseDatos($contrasena) {
+    $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
+    
+    if ($conn->connect_error) {
+        return null; // Devuelve null si la conexión falla
+    }
+    
+    return $conn;
+}
+
+$password1 = "Winsome1";
+$password2 = "Ribendiaz232";
+$conn = null;
+
+// Intentar conectar con la contraseña de tu compañero
+$conn = conectarBaseDatos($password1);
+
+// Si la conexión falla, intentar con tu contraseña
+if (!$conn) {
+    $conn = conectarBaseDatos($password2);
+}
+
+// Verificar la conexión
+if (!$conn) {
+    die("La conexión a la base de datos falló.");
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -65,12 +94,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $tabla = $_POST["tabla"];
 
-        $mysqli = new mysqli("localhost", "root", "Ribendiaz232", "autozone");
-
-        if ($mysqli->connect_errno) {
-            echo "Falló en conectar a MySQL: " . $mysqli->connect_error;
-            exit();
-        }
+        $mysqli = $conn;
 
         $query = "SELECT * FROM $tabla";
         $result = $mysqli->query($query);

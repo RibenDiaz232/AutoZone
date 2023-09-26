@@ -57,9 +57,9 @@
 
                             // Acciones de editar y eliminar
                             echo "<td>";
-                            echo "<a href='/Autozone/Autozone/conexion/editar.php?ID=" . $row["IDproductos"] . "' class='btn btn-warning btn-sm'>Editar</a>";
+                            echo "<a href='/Autozone/conexion/editar.php?tabla=productos&ID=" . $row["IDproductos"] . "' class='btn btn-warning btn-sm'>Editar</a>";
                             echo " ";
-                            echo "<a href='/Autozone/conexion/eliminar.php?ID=" . $row["IDproductos"] . "' class='btn btn-danger btn-sm'>Eliminar</a>";
+                            echo "<a href='/Autozone/conexion/eliminar.php?tabla=productos&ID=" . $row["IDproductos"] . "' class='btn btn-danger btn-sm'>Eliminar</a>";
                             echo "</td>";
 
                             echo "</tr>";

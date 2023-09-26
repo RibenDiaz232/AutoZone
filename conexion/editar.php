@@ -22,7 +22,7 @@
                     <h1 class="card-title">Editar Registro</h1>
                 </div>
                 <div class="card-body" id="editForm">
-                    <?php
+                <?php
                         if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["tabla"]) && isset($_GET["ID"])) {
                             $tabla = $_GET["tabla"];
                             $id = $_GET["ID"];
@@ -39,7 +39,7 @@
                             // Consulta para obtener el registro seleccionado
                             $query = "SELECT * FROM $tabla WHERE $tabla.ID$tabla = ?";
                             $stmt = $mysqli->prepare($query);
-                            $stmt->bind_param("id", $id);
+                            $stmt->bind_param("i", $id);
                             $stmt->execute();
                             $result = $stmt->get_result();
 
