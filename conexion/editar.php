@@ -26,19 +26,39 @@
                         if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET["tabla"]) && isset($_GET["ID"])) {
                             $tabla = $_GET["tabla"];
                             $id = $_GET["ID"];
-
-                            // Crear una instancia de conexión a la base de datos
-                            $mysqli = new mysqli("localhost", "root", "Ribendiaz232", "autozone");
-
+                            function conectarBaseDatos($contrasena) {
+                                $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
+                                if ($conn->connect_error) {
+                                    return null; // Devuelve null si la conexión falla
+                                }   
+                                return $conn;
+                            }
+                            $password1 = "Winsome1";
+                            $password2 = "Ribendiaz232";
+                            $conn = null;
+                            
+                            // Intentar conectar con la contraseña de tu compañero
+                            $conn = conectarBaseDatos($password1);
+                            
+                            // Si la conexión falla, intentar con tu contraseña
+                            if (!$conn) {
+                                $conn = conectarBaseDatos($password2);
+                            }
+                            
+                            // Verificar la conexión
+                            if (!$conn) {
+                                die("La conexión a la base de datos falló.");
+                            }
+                            
                             // Checar conexión a la base de datos.
-                            if ($mysqli->connect_errno) {
-                                echo "Falló en conectar a MySQL: " . $mysqli->connect_error;
+                            if ($conn->connect_errno) {
+                                echo "Falló en conectar a MySQL: " . $conn->connect_error;
                                 exit();
                             }
 
                             // Consulta para obtener el registro seleccionado
                             $query = "SELECT * FROM $tabla WHERE $tabla.ID$tabla = ?";
-                            $stmt = $mysqli->prepare($query);
+                            $stmt = $conn->prepare($query);
                             $stmt->bind_param("i", $id);
                             $stmt->execute();
                             $result = $stmt->get_result();
@@ -52,7 +72,7 @@
                                 echo "<input type='hidden' name='ID' value='$id'>";
 
                                 $columnInfoQuery = "SHOW COLUMNS FROM $tabla";
-                                $columnInfoResult = $mysqli->query($columnInfoQuery);
+                                $columnInfoResult = $conn->query($columnInfoQuery);
 
                                 if ($columnInfoResult) {
                                     while ($column = $columnInfoResult->fetch_assoc()) {
@@ -94,7 +114,7 @@
 
                         // Cerrar la conexión cuando hayas terminado de trabajar con la base de datos.
                         $stmt->close();
-                        $mysqli->close();
+                        $conn->close();
                     } else {
                         echo "<p class='text-center'>Parámetros inválidos.</p>";
                     }

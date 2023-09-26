@@ -1,10 +1,31 @@
 <?php
 // Incluir código de conexión a la base de datos aquí
+function conectarBaseDatos($contrasena) {
+    $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
+    if ($conn->connect_error) {
+        return null; // Devuelve null si la conexión falla
+    }   
+    return $conn;
+}
+$password1 = "Winsome1";
+$password2 = "Ribendiaz232";
+$conn = null;
 
-$mysqli = new mysqli("localhost", "root", "Ribendiaz232", "autozone");
+// Intentar conectar con la contraseña de tu compañero
+$conn = conectarBaseDatos($password1);
 
-if ($mysqli->connect_errno) {
-    echo "Falló en conectar a MySQL: " . $mysqli->connect_error;
+// Si la conexión falla, intentar con tu contraseña
+if (!$conn) {
+    $conn = conectarBaseDatos($password2);
+}
+
+// Verificar la conexión
+if (!$conn) {
+    die("La conexión a la base de datos falló.");
+}
+
+if ($conn->connect_errno) {
+    echo "Falló en conectar a MySQL: " . $conn->connect_error;
     exit();
 }
 
@@ -18,7 +39,7 @@ if (isset($_POST["tabla_seleccionada"])) {
 
     // Obtener información de restricciones de la tabla
     $restrictionsQuery = "SHOW CREATE TABLE $tabla_seleccionada";
-    $result = $mysqli->query($restrictionsQuery);
+    $result = $conn->query($restrictionsQuery);
 
     if ($result) {
         $row = $result->fetch_assoc();
@@ -33,7 +54,7 @@ if (isset($_POST["tabla_seleccionada"])) {
 
         // Obtener el valor actual del autoincremento
         $autoIncrementQuery = "SHOW TABLE STATUS LIKE '$tabla_seleccionada'";
-        $result = $mysqli->query($autoIncrementQuery);
+        $result = $conn->query($autoIncrementQuery);
 
         if ($result) {
             $row = $result->fetch_assoc();
@@ -42,7 +63,7 @@ if (isset($_POST["tabla_seleccionada"])) {
 
             // Verificar cuántos datos hay ingresados en la tabla
             $countQuery = "SELECT COUNT(*) AS total FROM $tabla_seleccionada";
-            $countResult = $mysqli->query($countQuery);
+            $countResult = $conn->query($countQuery);
 
             if ($countResult) {
                 $countRow = $countResult->fetch_assoc();
@@ -50,26 +71,26 @@ if (isset($_POST["tabla_seleccionada"])) {
                 $unusedAutoIncrement = $currentAutoIncrement - $totalData;
                 $message .= "<br>Hay un total de $totalData datos en la tabla y $unusedAutoIncrement valores sin usar (comúnmente siempre habrá un valor, porque es el la identificación que se estaría agregando).";
             } else {
-                $message .= "<br>Error al contar los datos de la tabla: " . $mysqli->error;
+                $message .= "<br>Error al contar los datos de la tabla: " . $conn->error;
             }
         } else {
-            $message = "Error al obtener información de la tabla $tabla_seleccionada_display: " . $mysqli->error;
+            $message = "Error al obtener información de la tabla $tabla_seleccionada_display: " . $conn->error;
         }
     } else {
-        $message = "Error al obtener la definición de la tabla $tabla_seleccionada_display: " . $mysqli->error;
+        $message = "Error al obtener la definición de la tabla $tabla_seleccionada_display: " . $conn->error;
     }
 }
 
 // Función para restablecer el autoincremento
-function resetAutoIncrement($mysqli, $tabla_seleccionada)
+function resetAutoIncrement($conn, $tabla_seleccionada)
 {
     $resetQuery = "ALTER TABLE $tabla_seleccionada AUTO_INCREMENT = 1";
     $analyzeQuery = "ANALYZE TABLE $tabla_seleccionada";
 
     // Restablecer el autoincremento
-    if ($mysqli->query($resetQuery) === TRUE) {
+    if ($conn->query($resetQuery) === TRUE) {
         // Realizar el análisis de la tabla
-        if ($mysqli->query($analyzeQuery) === TRUE) {
+        if ($conn->query($analyzeQuery) === TRUE) {
             return true;
         }
     }
@@ -80,7 +101,7 @@ function resetAutoIncrement($mysqli, $tabla_seleccionada)
 // Verificar si se ha enviado un formulario para restablecer el autoincremento
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["reset_autoincrement"])) {
     $tabla_seleccionada = $_POST["tabla_seleccionada"];
-    $result = resetAutoIncrement($mysqli, $tabla_seleccionada);
+    $result = resetAutoIncrement($conn, $tabla_seleccionada);
 
     if ($result) {
         // Agregar un mensaje de éxito
@@ -96,7 +117,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["reset_autoincrement"])
 }
 
 // Cerrar la conexión a la base de datos
-$mysqli->close();
+$conn->close();
 ?>
 
 <!DOCTYPE html>

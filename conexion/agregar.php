@@ -1,16 +1,36 @@
 <?php
-// Crear una instancia de conexión a la base de datos
-$mysqli = new mysqli("localhost", "root", "Ribendiaz232", "autozone");
+function conectarBaseDatos($contrasena) {
+    $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
+    if ($conn->connect_error) {
+        return null; // Devuelve null si la conexión falla
+    }   
+    return $conn;
+}
+$password1 = "Winsome1";
+$password2 = "Ribendiaz232";
+$conn = null;
 
+// Intentar conectar con la contraseña de tu compañero
+$conn = conectarBaseDatos($password1);
+
+// Si la conexión falla, intentar con tu contraseña
+if (!$conn) {
+    $conn = conectarBaseDatos($password2);
+}
+
+// Verificar la conexión
+if (!$conn) {
+    die("La conexión a la base de datos falló.");
+}
 // Checar conexión a la base de datos.
-if ($mysqli->connect_errno) {
-    echo "Falló en conectar a MySQL: " . $mysqli->connect_error;
+if ($conn->connect_errno) {
+    echo "Falló en conectar a MySQL: " . $conn->connect_error;
     exit();
 }
 
 // Obtener la lista de tablas disponibles
 $tablesQuery = "SHOW TABLES";
-$tablesResult = $mysqli->query($tablesQuery);
+$tablesResult = $conn->query($tablesQuery);
 $tables = array();
 
 if ($tablesResult) {
@@ -18,7 +38,7 @@ if ($tablesResult) {
         $tables[] = $row[0];
     }
 } else {
-    echo "Error al obtener la lista de tablas: " . $mysqli->error;
+    echo "Error al obtener la lista de tablas: " . $conn->error;
 }
 
 // Inicializar variables
@@ -31,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Obtener información de columnas de la tabla seleccionada
     $columnInfoQuery = "SHOW COLUMNS FROM $tablaSeleccionada";
-    $columnInfoResult = $mysqli->query($columnInfoQuery);
+    $columnInfoResult = $conn->query($columnInfoQuery);
 
     if ($columnInfoResult) {
         while ($column = $columnInfoResult->fetch_assoc()) {
             $columnas[] = $column['Field'];
         }
     } else {
-        echo "Error al obtener información de columnas: " . $mysqli->error;
+        echo "Error al obtener información de columnas: " . $conn->error;
     }
 }
 
@@ -48,14 +68,14 @@ if (isset($_GET['tabla'])) {
 
     // Obtener información de columnas de la tabla seleccionada
     $columnInfoQuery = "SHOW COLUMNS FROM $tablaSeleccionada";
-    $columnInfoResult = $mysqli->query($columnInfoQuery);
+    $columnInfoResult = $conn->query($columnInfoQuery);
 
     if ($columnInfoResult) {
         while ($column = $columnInfoResult->fetch_assoc()) {
             $columnas[] = $column['Field'];
         }
     } else {
-        echo "Error al obtener información de columnas: " . $mysqli->error;
+        echo "Error al obtener información de columnas: " . $conn->error;
     }
 }
 
@@ -76,12 +96,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['agregar'])) {
     $query = "INSERT INTO $tabla ($columnasInsert) VALUES ($valoresInsert)";
 
     // Ejecutar la consulta SQL de inserción
-    if ($mysqli->query($query) === true) {
+    if ($conn->query($query) === true) {
         header("refresh:5;url=conexion.php");
         echo "Datos agregados con éxito. Redireccionando a la página principal en 5 segundos...";
         exit();
     } else {
-        echo "Error al insertar datos: " . $mysqli->error;
+        echo "Error al insertar datos: " . $conn->error;
     }
 }
 
@@ -98,7 +118,7 @@ foreach ($columnas as $columna) {
 if ($idColumn) {
     // Obtener el próximo valor autoincrementado
     $autoIncrementQuery = "SHOW TABLE STATUS LIKE '$tablaSeleccionada'";
-    $autoIncrementResult = $mysqli->query($autoIncrementQuery);
+    $autoIncrementResult = $conn->query($autoIncrementQuery);
     $autoIncrementData = $autoIncrementResult->fetch_assoc();
     $nextAutoIncrementValue = $autoIncrementData['Auto_increment'];
 
@@ -110,7 +130,7 @@ if ($idColumn) {
 }
 
 // Cerrar la conexión a la base de datos
-$mysqli->close();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">
