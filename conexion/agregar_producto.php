@@ -12,23 +12,18 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $Descripcion = $_POST["Descripcion"];
     $Precio = $_POST["Precio"];
 
-    // Genera un código de barras único
-    $CodigoBarras = generateBarcode(); // Debes implementar esta función
+    // Genera un código de barras aleatorio (números del 0 al 9)
+    $codigo_barras = generateBarcode(); // Debes implementar esta función
 
     // Inserta los datos en la base de datos
     $sql = "INSERT INTO productos (Nombre, Descripcion, Precio, CodigoBarras) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssds", $Nombre, $Descripcion, $Precio, $CodigoBarras);
+    $stmt->bind_param("ssds", $Nombre, $Descripcion, $Precio, $codigo_barras);
     
     if ($stmt->execute()) {
-        echo "Producto agregado con éxito.";
-        
-        // Redirigir a inventario.php después de agregar el producto
-        echo '<script>
-            setTimeout(function () {
-                window.location.href = "inventario.php";
-            }, 5000);
-        </script>';
+        // Redirigir a inventario.php
+        header("Location: /AutoZone/php/inventario.php");
+        exit; // Asegurarse de que el script se detenga aquí
     } else {
         echo "Error al agregar el producto: " . $conn->error;
     }
@@ -37,23 +32,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $conn->close();
 }
 
-// Función para generar un código de barras único
+// Función para generar un código de barras aleatorio
 function generateBarcode() {
-    // Utiliza la biblioteca Zend\Barcode para generar un código de barras único
-    // Asegúrate de ajustar los parámetros según tus necesidades
-    require 'vendor/autoload.php'; // Ajusta la ruta según tu proyecto
-    $renderer = new Zend\Barcode\Renderer\Image();
-    $options = [
-        'text' => uniqid(), // Genera un código único (puedes personalizarlo más)
-        'imageType' => 'png',
-    ];
-    $barcode = new Zend\Barcode\Barcode($options);
-    $barcode->setRenderer($renderer);
-    $barcodeImage = $barcode->generate();
-
-    // Puedes guardar o almacenar $barcodeImage en tu base de datos si es necesario
-
-    return $barcodeImage;
+    // Genera un código de barras de longitud 10 con números aleatorios del 0 al 9
+    $codigo_barras = "";
+    for ($i = 0; $i < 10; $i++) {
+        $codigo_barras .= rand(0, 9);
+    }
+    return $codigo_barras;
 }
 ?>
 <!DOCTYPE html>

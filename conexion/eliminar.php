@@ -77,7 +77,7 @@
                 echo "<input type='hidden' name='tabla' value='$tabla'>";
                 echo "<input type='hidden' name='ID' value='$id'>";
                 echo "<button type='submit' class='btn btn-danger btn-confirmar mx-2'>Eliminar</button>";
-                echo "<a href='conexion.php' class='btn btn-secondary btn-confirmar mx-2'>Cancelar</a>";
+                echo "<a href='inventario.php' class='btn btn-secondary btn-confirmar mx-2'>Cancelar</a>";
                 echo "</form>";
             } else {
                 echo "<div class='text-center'>";
