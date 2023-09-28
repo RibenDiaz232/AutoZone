@@ -50,7 +50,7 @@ $totalIngresos = $rowTotalIngresos['total'];
                             <a class="nav-link" href="venta.php">Vender</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Reporte</a>
+                            <a class="nav-link" href="reporte_ventas.php">Reporte</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="usuarios.php">Usuarios</a>
