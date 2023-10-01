@@ -1,11 +1,9 @@
 <?php
-// Conecta a la base de datos (ajusta las credenciales)
-$conn = new mysqli("localhost", "root", "Winsome1", "Autozone");
-
-if ($conn->connect_error) {
-    die("Error de conexión: " . $conn->connect_error);
+include "conexionpwd.php";
+// Verificar la conexión
+if (!$conn) {
+    die("La conexión a la base de datos falló.");
 }
-
 // Consulta para obtener las ventas desde la base de datos
 $sql = "SELECT * FROM ventas";
 $result = $conn->query($sql);
