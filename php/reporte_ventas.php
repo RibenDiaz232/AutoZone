@@ -1,26 +1,71 @@
 <?php
 include "conexionpwd.php";
+
 // Verificar la conexión
 if (!$conn) {
     die("La conexión a la base de datos falló.");
 }
-// Consulta para obtener las ventas desde la base de datos
-$sql = "SELECT * FROM ventas";
-$result = $conn->query($sql);
 
-$ventas = array();
-$fechas = array();
+// Obtener datos de ventas por día
+$sqlDia = "SELECT DATE(fecha) as dia, SUM(TotalConIVA) as totalDia FROM ventas GROUP BY dia";
+$resultDia = $conn->query($sqlDia);
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $ventas[] = $row["TotalConIVA"]; // Asumiendo que deseas graficar los totales con IVA
-        $fechas[] = $row["fecha"]; // Añade las fechas correspondientes
+$ventasDia = array();
+$fechasDia = array();
+
+if ($resultDia->num_rows > 0) {
+    while ($row = $resultDia->fetch_assoc()) {
+        $ventasDia[] = $row["totalDia"];
+        $fechasDia[] = $row["dia"];
+    }
+}
+
+// Obtener datos de ventas por semana
+$sqlSemana = "SELECT YEARWEEK(fecha, 1) as semana, SUM(TotalConIVA) as totalSemana FROM ventas GROUP BY semana";
+$resultSemana = $conn->query($sqlSemana);
+
+$ventasSemana = array();
+$fechasSemana = array();
+
+if ($resultSemana->num_rows > 0) {
+    while ($row = $resultSemana->fetch_assoc()) {
+        $ventasSemana[] = $row["totalSemana"];
+        $fechasSemana[] = "Semana " . $row["semana"];
+    }
+}
+
+// Obtener datos de ventas por mes
+$sqlMes = "SELECT DATE_FORMAT(fecha, '%Y-%m') as mes, SUM(TotalConIVA) as totalMes FROM ventas GROUP BY mes";
+$resultMes = $conn->query($sqlMes);
+
+$ventasMes = array();
+$fechasMes = array();
+
+if ($resultMes->num_rows > 0) {
+    while ($row = $resultMes->fetch_assoc()) {
+        $ventasMes[] = $row["totalMes"];
+        $fechasMes[] = $row["mes"];
+    }
+}
+
+// Obtener datos de ventas por año
+$sqlAnio = "SELECT YEAR(fecha) as anio, SUM(TotalConIVA) as totalAnio FROM ventas GROUP BY anio";
+$resultAnio = $conn->query($sqlAnio);
+
+$ventasAnio = array();
+$fechasAnio = array();
+
+if ($resultAnio->num_rows > 0) {
+    while ($row = $resultAnio->fetch_assoc()) {
+        $ventasAnio[] = $row["totalAnio"];
+        $fechasAnio[] = $row["anio"];
     }
 }
 
 // Cierra la conexión
 $conn->close();
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -32,81 +77,224 @@ $conn->close();
 </head>
 <body>
     <h2>Reporte de Ventas</h2>
+
+    <!-- Tabla de ventas por día -->
+    <h3>Ventas por Día</h3>
     <table border="1">
         <thead>
             <tr>
-                <th>ID Venta</th>
-                <th>Total sin IVA</th>
-                <th>IVA (16%)</th>
+                <th>Día</th>
                 <th>Total con IVA</th>
             </tr>
         </thead>
         <tbody>
             <?php
-            // Tu código PHP para obtener las ventas aquí (ya lo tienes)
-            if (!empty($ventas)) {
-                foreach ($ventas as $index => $venta) {
+            if (!empty($ventasDia)) {
+                foreach ($ventasDia as $index => $venta) {
                     echo "<tr>
-                            <td>" . ($index + 1) . "</td>
-                            <td>" . ($venta - ($venta * 0.16)) . "</td>
-                            <td>" . ($venta * 0.16) . "</td>
-                            <td>$venta</td>
+                            <td>{$fechasDia[$index]}</td>
+                            <td>{$venta} USD</td>
                           </tr>";
                 }
             } else {
-                echo "<tr><td colspan='4'>No se encontraron ventas.</td></tr>";
+                echo "<tr><td colspan='2'>No se encontraron ventas por día.</td></tr>";
             }
             ?>
         </tbody>
     </table>
 
-    <!-- Agrega un contenedor para la gráfica de ventas -->
-    <div style="width: 80%; margin: auto;">
-        <canvas id="graficaVentas"></canvas>
-    </div>
+    <!-- Gráfica de ventas por día -->
+    <h3>Gráfica de Ventas por Día</h3>
+    <canvas id="graficaVentasDia"></canvas>
 
-    <!-- Botón de regreso -->
-    <div style="text-align: center; margin-top: 20px;">
-        <a href="index.php"><button>Volver al Index</button></a>
-    </div>
+    <!-- Tabla de ventas por semana -->
+    <h3>Ventas por Semana</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Semana</th>
+                <th>Total con IVA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (!empty($ventasSemana)) {
+                foreach ($ventasSemana as $index => $venta) {
+                    echo "<tr>
+                            <td>{$fechasSemana[$index]}</td>
+                            <td>{$venta} USD</td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='2'>No se encontraron ventas por semana.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
 
+    <!-- Gráfica de ventas por semana -->
+    <h3>Gráfica de Ventas por Semana</h3>
+    <canvas id="graficaVentasSemana"></canvas>
+
+    <!-- Tabla de ventas por mes -->
+    <h3>Ventas por Mes</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Mes</th>
+                <th>Total con IVA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (!empty($ventasMes)) {
+                foreach ($ventasMes as $index => $venta) {
+                    echo "<tr>
+                            <td>{$fechasMes[$index]}</td>
+                            <td>{$venta} USD</td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='2'>No se encontraron ventas por mes.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
+    <!-- Gráfica de ventas por mes -->
+    <h3>Gráfica de Ventas por Mes</h3>
+    <canvas id="graficaVentasMes"></canvas>
+
+    <!-- Tabla de ventas por año -->
+    <h3>Ventas por Año</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Año</th>
+                <th>Total con IVA</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php
+            if (!empty($ventasAnio)) {
+                foreach ($ventasAnio as $index => $venta) {
+                    echo "<tr>
+                            <td>{$fechasAnio[$index]}</td>
+                            <td>{$venta} USD</td>
+                          </tr>";
+                }
+            } else {
+                echo "<tr><td colspan='2'>No se encontraron ventas por año.</td></tr>";
+            }
+            ?>
+        </tbody>
+    </table>
+
+    <!-- Gráfica de ventas por año -->
+    <h3>Gráfica de Ventas por Año</h3>
+    <canvas id="graficaVentasAnio"></canvas>
+
+    <!-- Script para crear la gráfica de ventas por día -->
     <script>
-        // Obtén el contexto del lienzo de la gráfica
-        var ctx = document.getElementById("graficaVentas").getContext("2d");
-
-        // Datos de ejemplo (reemplaza esto con tus datos reales)
-        var fechas = <?php echo json_encode($fechas); ?>;
-        var ventas = <?php echo json_encode($ventas); ?>;
-
-        // Crea una instancia de la gráfica de barras con datos de ejemplo
-        var graficaVentas = new Chart(ctx, {
-            type: "bar", // Tipo de gráfica de barras
+        var ctxDia = document.getElementById("graficaVentasDia").getContext("2d");
+        var graficaVentasDia = new Chart(ctxDia, {
+            type: "bar",
             data: {
-                labels: fechas, // Etiquetas para el eje X (fechas)
+                labels: <?php echo json_encode($fechasDia); ?>,
                 datasets: [{
                     label: "Total con IVA",
-                    data: ventas, // Datos de ventas
-                    backgroundColor: "rgba(75, 192, 192, 0.2)", // Color de fondo
-                    borderColor: "rgba(75, 192, 192, 1)", // Color del borde
-                    borderWidth: 1 // Ancho del borde
+                    data: <?php echo json_encode($ventasDia); ?>,
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
                 }]
             },
             options: {
                 scales: {
                     y: {
-                        beginAtZero: true // Comienza el eje Y en cero
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+    </script>
+
+    <!-- Script para crear la gráfica de ventas por semana -->
+    <script>
+        var ctxSemana = document.getElementById("graficaVentasSemana").getContext("2d");
+        var graficaVentasSemana = new Chart(ctxSemana, {
+            type: "bar",
+            data: {
+                labels: <?php echo json_encode($fechasSemana); ?>,
+                datasets: [{
+                    label: "Total con IVA",
+                    data: <?php echo json_encode($ventasSemana); ?>,
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
         });
     </script>
+
+    <!-- Script para crear la gráfica de ventas por mes -->
+    <script>
+        var ctxMes = document.getElementById("graficaVentasMes").getContext("2d");
+        var graficaVentasMes = new Chart(ctxMes, {
+            type: "bar",
+            data: {
+                labels: <?php echo json_encode($fechasMes); ?>,
+                datasets: [{
+                    label: "Total con IVA",
+                    data: <?php echo json_encode($ventasMes); ?>,
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Script para crear la gráfica de ventas por año -->
+    <script>
+        var ctxAnio = document.getElementById("graficaVentasAnio").getContext("2d");
+        var graficaVentasAnio = new Chart(ctxAnio, {
+            type: "bar",
+            data: {
+                labels: <?php echo json_encode($fechasAnio); ?>,
+                datasets: [{
+                    label: "Total con IVA",
+                    data: <?php echo json_encode($ventasAnio); ?>,
+                    backgroundColor: "rgba(75, 192, 192, 0.2)",
+                    borderColor: "rgba(75, 192, 192, 1)",
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+        <!-- Botón de salida -->
+    <a href="index.php">Volver al Índice</a>
 </body>
 </html>
-<p>Venta registrada el 2023-09-28 02:08:02:</p>
-<ul>
-<li> - 75 USD</li>
-<li> - 400 USD</li>
-<li> - 7000 USD</li>
-</ul>
-<p>Total de la venta: 7475 USD</p>
-
