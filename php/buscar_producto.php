@@ -3,11 +3,10 @@ session_start();
 
 // Verifica si se ha enviado un formulario
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["CodigoBarras"])) {
-    // Conecta a la base de datos (ajusta las credenciales)
-    $conn = new mysqli("localhost", "root", "Winsome1", "Autozone");
-
-    if ($conn->connect_error) {
-        die("Error de conexión: " . $conn->connect_error);
+    include "conexionpwd.php";
+    // Verificar la conexión
+    if (!$conn) {
+        die("La conexión a la base de datos falló.");
     }
 
     $CodigoBarras = $_POST["CodigoBarras"];
