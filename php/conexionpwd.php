@@ -3,21 +3,28 @@ function conectarBaseDatos($contrasena) {
     $conn = @new mysqli("localhost", "root", $contrasena, "autozone");
     
     if ($conn->connect_error) {
-        return null; // Devuelve null si la conexión falla
+        // Devuelve false si la conexión falla
+        return false;
     }
     
     return $conn;
 }
 
-$password1 = "Winsome1";
-$password2 = "Ribendiaz232";
+$passwords = array("Winsome1", "Ribendiaz232");
 $conn = null;
 
-// Intentar conectar con la contraseña de tu compañero
-$conn = conectarBaseDatos($password1);
+// Intentar conectar con las contraseñas
+foreach ($passwords as $password) {
+    $conn = conectarBaseDatos($password);
+    
+    // Si la conexión es exitosa, sal del bucle
+    if ($conn) {
+        break;
+    }
+}
 
-// Si la conexión falla, intentar con tu contraseña
+// Verificar si se estableció una conexión
 if (!$conn) {
-    $conn = conectarBaseDatos($password2);
+    die("No se pudo conectar a la base de datos.");
 }
 ?>
